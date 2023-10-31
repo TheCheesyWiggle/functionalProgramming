@@ -3,7 +3,7 @@ import Data.List
 main :: IO ()
 
 main =
-    print ( isMagic 9 43 28 6 )
+    print (  filter tester generator  )
     
 generator::[(Int,Int,Int,Int)]
 generator 
@@ -14,13 +14,14 @@ generator
     , mt <- [1..12]
     ]
     
---tester:: (Int, Int, Int, Int) -> Bool
---tester
---    = [(hr,mn,dy,mt)
---    , isMagic hr mn dy mt
---   ]
+tester:: (Int, Int, Int, Int) -> Bool
+tester (hr, mn, dy, mt)
+    =  isMagic hr mn dy mt
+    && isMagic hr mn (dy+1) mt
+    && isMagic hr (mn+1) (dy+1) mt 
+    && avg (noLitSegs hr mn dy mt) (noLitSegs hr mn (dy+1) mt) == fromIntegral (noLitSegs hr (mn+1) (dy+1) mt )
 
-isMagic::Int -> Int -> Int -> Int -> Bool   
+isMagic:: Int -> Int -> Int -> Int -> Bool   
 isMagic hr mn dy mt
     =  isPrime(noLitSegs hr mn dy mt) && noDups [hr `mod` 10, hr `div` 10, mn `mod` 10, mn `div` 10, dy `mod` 10, dy `div` 10, mt `mod` 10, mt `div` 10]
     
@@ -55,3 +56,6 @@ factorisable :: Int -> Int -> Bool
 factorisable f n
     | f*f <= n=n `mod` f==0 || factorisable (f+1)n
     | otherwise = False
+    
+avg:: Int -> Int -> Double
+avg x y = fromIntegral (x + y) / 2.0

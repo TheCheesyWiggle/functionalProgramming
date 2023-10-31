@@ -3,7 +3,7 @@ import Data.List
 main :: IO ()
 
 main =
-    print (  filter tester generator  )
+    print (filter tester generator)
     
 generator::[(Int,Int,Int,Int)]
 generator 
@@ -19,7 +19,7 @@ tester (hr, mn, dy, mt)
     =  isMagic hr mn dy mt
     && isMagic hr mn (dy+1) mt
     && isMagic hr (mn+1) (dy+1) mt 
-    && avg (noLitSegs hr mn dy mt) (noLitSegs hr mn (dy+1) mt) == fromIntegral (noLitSegs hr (mn+1) (dy+1) mt )
+    && avg (noLitSegs hr mn dy mt) (noLitSegs hr mn (dy+1) mt) == fromIntegral (noLitSegs hr (mn+1) (dy+1) mt)
 
 isMagic:: Int -> Int -> Int -> Int -> Bool   
 isMagic hr mn dy mt

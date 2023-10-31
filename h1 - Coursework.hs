@@ -4,8 +4,10 @@ main :: IO ()
 
 main = 
     --print (x_generator1)
-    print (x_tester1)
-    --print (filter tester generator)
+    --print (x_tester1)
+    --print(avg 8 6)
+    print(tester1 (16,59,27,4))
+    --print (filter tester1 generator1)
     
 x_generator1 :: Int
 x_generator1 =
@@ -51,27 +53,27 @@ generator1
     , dy <- [1..31]
     , mt <- [1..12]
     ]
-    
+-- not sure    
 tester1 :: (Int, Int, Int, Int) -> Bool
 tester1 (hr, mn, dy, mt)
     =  isMagic hr mn dy mt
     && isMagic hr mn (dy+1) mt
-    && isMagic hr (mn+1) (dy+1) mt 
     && avg (noLitSegs hr mn dy mt) (noLitSegs hr mn (dy+1) mt) == fromIntegral (noLitSegs hr (mn+1) (dy+1) mt)
-
+    
+-- works
 isMagic:: Int -> Int -> Int -> Int -> Bool   
 isMagic hr mn dy mt
     =  isPrime(noLitSegs hr mn dy mt) && noDups [hr `mod` 10, hr `div` 10, mn `mod` 10, mn `div` 10, dy `mod` 10, dy `div` 10, mt `mod` 10, mt `div` 10]
-    
+-- works 
 noDups :: Eq a => [a] -> Bool
 noDups s 
     = s == nub s
 
-    
+-- works   
 noLitSegs::Int -> Int -> Int -> Int -> Int
 noLitSegs hr mn dy mt
     = segConverter (hr `mod` 10) + segConverter (hr `div` 10) + segConverter (mn `mod` 10) + segConverter (mn `div` 10) + segConverter (dy `mod` 10) + segConverter (dy `div` 10) + segConverter (mt `mod` 10) + segConverter (mt `div` 10)
-
+-- works
 segConverter:: Int -> Int
 segConverter  digit
     | digit == 0 = 6
@@ -85,15 +87,15 @@ segConverter  digit
     | digit == 8 = 7
     | digit == 9 = 6
     | otherwise = 0
-
+--works
 isPrime:: Int -> Bool
 isPrime
     = not . factorisable 2
-
+-- works
 factorisable :: Int -> Int -> Bool
 factorisable f n
     | f*f <= n=n `mod` f==0 || factorisable (f+1)n
     | otherwise = False
-    
+--works    
 avg:: Int -> Int -> Double
 avg x y = fromIntegral (x + y) / 2.0

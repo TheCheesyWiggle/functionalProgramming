@@ -11,15 +11,26 @@ main =
     --print(tester ( " 123 " ," 21 " ," 123 " ," 12 " ," 123 " ))
 
     
-generator2:: [([Char], [Char], [Char], [Char], [Char])]
-generator2 = [(show n1, show n2, show n3, show n4, show n5)
+generator2:: [(String, String, String, String, String)]
+generator2 = [(n1, n2, n3, n4, n5)
     -- Generates numbers
-    | n1 <- [111..945]
-    , n2 <- [11..99]
-    , n3 <- [111..945]
-    , n4 <- [11..99]
-    , n5 <- [111..945]
+    | n <- map show[123..987]
+    , special n
+    , n1 <- permutations n
+    , n2 <- permutations n
+    , n3 <- permutations n
+    , n4 <- permutations n
+    , n5 <- permutations n
+    , noDups([n1,n2,n3,n4,n)
+
     ]
+
+special:: String -> Bool
+special s = not ('0' `elem` s) && noDups s
+
+noDups :: Eq a => [a] -> Bool
+noDups s 
+    = s == nub s
     
 x_generator2 :: Int
 x_generator2 =

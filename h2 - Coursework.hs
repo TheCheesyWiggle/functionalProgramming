@@ -14,16 +14,25 @@ main =
 generator2:: [(String, String, String, String, String)]
 generator2 = [(n1, n2, n3, n4, n5)
     -- Generates numbers
-    | n <- map show[123..987]
-    , special n
-    , n1 <- permutations n
-    , n2 <- permutations n
-    , n3 <- permutations n
-    , n4 <- permutations n
-    , n5 <- permutations n
-    , noDups([n1,n2,n3,n4,n)
+    | s1 <- map show[123..987]
+    , s2 <- map show[12..98]
+    , special s1
+    , special s2
+    , n1 <- permutations s1
+    , n2 <- permutations s2
+    , n3 <- permutations n1
+    , n4 <- permutations s2
+    , n5 <- permutations n1
+    , noDups [read n1, read n2, read n3, read n4, read n5]
+    , first(n1)/=first(n2)
 
     ]
+--toInt::(String,String,String,String,String) -> (Int,Int,Int,Int,Int)
+--toInt (n1, n2, n3, n4, n5)
+--    = 
+
+first:: String -> Char
+first (head:tail) = head
 
 special:: String -> Bool
 special s = not ('0' `elem` s) && noDups s

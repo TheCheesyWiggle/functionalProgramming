@@ -22,7 +22,7 @@ generator2 = [(n1, n2, n3, n4, n5)
     
 tester2:: (String, String, String, String, String) -> Bool
 tester2 (n1, n2, n3, n4, n5) =
-    (i1 - i1) == i3
+    (i1 - i2) == i3
     && (i3 - i4) == i5
     && (i1 + i3 + i5) < 2000
     where

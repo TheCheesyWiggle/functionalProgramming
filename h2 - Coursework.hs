@@ -2,25 +2,24 @@ import Data.List
 
 main :: IO ()
 
-main = 
+main =
     print (x_tester2)
-    --print (filter tester1 generator1)
+    --print (filter tester2 generator2)
     --print(tester ( " 123 " ," 21 " ," 123 " ," 12 " ," 123 " ))
 
-    
-generator2:: [(String, String, String, String, String)]
+generator2 :: [(String, String, String, String, String)]
 generator2 = [(n1, n2, n3, n4, n5)
     -- Generates numbers
     | n1 <- map show[123..987], special n1
     , n2 <- take 2 (permutations n1)
     , n3 <- permutations n1
-    , n4 <- permutations n2
+    , n4 <- take 2 (permutations n1)
     , n5 <- permutations n3
     , nodups [n1, n2, n3, n4, n5]
-    , first(n1,n2)
+    , first (n1, n2)
     ]
     
-tester2:: (String, String, String, String, String) -> Bool
+tester2 :: (String, String, String, String, String) -> Bool
 tester2 (n1, n2, n3, n4, n5) =
     (i1 - i2) == i3
     && (i3 - i4) == i5
@@ -33,12 +32,11 @@ tester2 (n1, n2, n3, n4, n5) =
         i5 = read n5
 
 
-first:: (String, String) -> Bool
-first (n1,n2) =
-    head n1 /= head n2
+first :: (String, String) -> Bool
+first (n1, n2) = head n1 /= head n2
     
 -- checks that the number doesnt have recurring digits
-special:: String -> Bool
+special :: String -> Bool
 special s = not ('0' `elem` s) && nodups s
 
 nodups :: Eq a => [ a ] -> Bool

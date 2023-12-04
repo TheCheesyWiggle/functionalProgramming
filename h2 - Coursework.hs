@@ -13,23 +13,20 @@ main =
 generator2:: [(String, String, String, String, String)]
 generator2 = [(n1, n2, n3, n4, n5)
     -- Generates numbers
-    | n1 <- map show[123..987]
-    , special n1
+    | n1 <- map show[123..987], special n1
     , n2 <- take 2 (permutations n1)
     , n3 <- permutations n1
-    , n4 <- take 2 (permutations n1)
-    , n5 <- permutations n1
+    , n4 <- permutations n2
+    , n5 <- permutations n3
     , noDups [n1, n2, n3, n4, n5]
-    , first(n1)/=first(n2)
+    , first(n1,n2)
     ]
---toInt::(String,String,String,String,String) -> (Int,Int,Int,Int,Int)
---toInt (n1, n2, n3, n4, n5)
---    = 
 
 
-first:: String -> Char
-first (head:tail) = head
-
+first:: (String, String) -> Bool
+first (n1,n2) =
+    head n1 /= head n2
+    
 -- checks that the number doesnt have recurring digits
 special:: String -> Bool
 special s = not ('0' `elem` s) && noDups s
@@ -44,14 +41,14 @@ x_generator2 =
     where
         g = generator2
         ts =
-            [ ( " 123 " ," 21 " ," 123 " ," 12 " ," 123 " )
-            , ( " 162 " ," 26 " ," 261 " ," 12 " ," 621 " )
-            , ( " 219 " ," 19 " ," 912 " ," 21 " ," 291 " )
-            , ( " 329 " ," 92 " ," 932 " ," 32 " ," 239 " )
-            , ( " 439 " ," 94 " ," 394 " ," 43 " ," 394 " )
-            , ( " 549 " ," 95 " ," 945 " ," 95 " ," 945 " )
-            , ( " 568 " ," 68 " ," 586 " ," 56 " ," 586 " )
-            , ( " 769 " ," 67 " ," 679 " ," 97 " ," 796 " )
-            , ( " 879 " ," 79 " ," 897 " ," 98 " ," 789 " )
-            , ( " 987 " ," 79 " ," 789 " ," 79 " ," 789 " )
+            [ ( "123" ,"21" ,"123" ,"12" ,"123" )
+            , ( "162" ,"26" ,"261" ,"12" ,"621" )
+            , ( "219" ,"19" ,"912" ,"21" ,"291" )
+            , ( "329" ,"92" ,"932" ,"32" ,"239" )
+            , ( "439" ,"94" ,"394" ,"43" ,"394" )
+            , ( "549" ,"95" ,"945" ,"95" ,"945" )
+            , ( "568" ,"68" ,"586" ,"56" ,"586" )
+            , ( "769" ,"67" ,"679" ,"97" ,"796" )
+            , ( "879" ,"79" ,"897" ,"98" ,"789" )
+            , ( "987" ,"79" ,"789" ,"79" ,"789" )
             ]

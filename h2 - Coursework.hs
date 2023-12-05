@@ -15,7 +15,7 @@ generator2 = [(n1, n2, n3, n4, n5)
     | n1 <- map show[123..987], special n1
     , n2 <- permutations(take 2 n1)
     , n3 <- permutations n1
-    , n4 <- permutations(take 2 n1)
+    , n4 <- permutations(take 2 n3)
     , n5 <- permutations n1
     , nodups [n1, n2, n3, n4, n5]
     , first (n1, n2)

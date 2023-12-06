@@ -3,21 +3,16 @@ import Data.List
 main :: IO ()
 
 main =
-    --let i1 = take 1 ["123","231","312","132"]
-    --print(take 2 (concat(take 1 ["123","231","312","132"])))
-    print (x_generator2)
-    --print (filter tester2 generator2)
-    --print(tester ( " 123 " ," 21 " ," 123 " ," 12 " ," 123 " ))
+    print (filter tester2 generator2)
 
 generator2 :: [(String, String, String, String, String)]
 generator2 = [(n1, n2, n3, n4, n5)
     -- Generates numbers
-    | n1 <- map show[123..987], special n1
-    , n2 <- permutations(take 2 n1)
+    | n1 <- map show [123..987], special n1
+    , n2 <- twoDigitPerm n1
     , n3 <- permutations n1
-    , n4 <- permutations(take 2 n3)
+    , n4 <- twoDigitPerm n1
     , n5 <- permutations n1
-    , nodups [n1, n2, n3, n4, n5]
     , first (n1, n2)
     ]
     
@@ -33,7 +28,9 @@ tester2 (n1, n2, n3, n4, n5) =
         i4 = read n4
         i5 = read n5
 
-
+twoDigitPerm :: String -> [String]
+twoDigitPerm str = filter (\x -> length x == 2) $ map (take 2) $ permutations str
+    
 first :: (String, String) -> Bool
 first (n1, n2) = head n1 /= head n2
     

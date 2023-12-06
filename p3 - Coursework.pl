@@ -1,5 +1,5 @@
 main():-
-    tester3.
+    x_generator3().
 
 generator3(N):-
     between(1000, 1000000, N),
@@ -9,7 +9,7 @@ generator3(N):-
 tester3(N):-
    	% Convert the number to a list of digits, Ensure all digits are different
     digits(N,[N1, N2, N3, N4, N5]),
-    X1>0, X2>0, X3>0, X4>0, N5>0,
+    N1>0, N2>0, N3>0, N4>0, N5>0,
     nodups([N1, N2, N3, N4, N5]),
     % Last digit is equal to the number of digits
     length_list([N1, N2, N3, N4, N5], NumDigits),

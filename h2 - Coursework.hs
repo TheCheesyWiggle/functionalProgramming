@@ -29,7 +29,7 @@ tester2 (n1, n2, n3, n4, n5) =
         i5 = read n5
 
 twoDigitPerm :: String -> [String]
-twoDigitPerm str = filter (\x -> length x == 2) $ map (take 2) $ permutations str
+twoDigitPerm str = filter (\x -> length x == 2) (map (take 2)) (permutations str)
     
 first :: (String, String) -> Bool
 first (n1, n2) = head n1 /= head n2

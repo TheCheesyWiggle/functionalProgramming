@@ -1,23 +1,27 @@
 main():-
-    member(0,[1,2,3,0,5,6]).
+    tester3.
 
 generator3(N):-
-    between(10000, 1000000, N),
+    between(1000, 1000000, N),
     X is integer(sqrt(N)),
     N is X * X.
 
 tester3(N):-
-    % Convert the number to a list of digits, Ensure all digits are different
+   	% Convert the number to a list of digits, Ensure all digits are different
     digits(N,[N1, N2, N3, N4, N5]),
     X1>0, X2>0, X3>0, X4>0, N5>0,
     nodups([N1, N2, N3, N4, N5]),
     % Last digit is equal to the number of digits
-    
+    length_list([N1, N2, N3, N4, N5], NumDigits),
+    N5 =:= NumDigits,
+ 
     % Last-but-one digit is odd
     
     % One of the digits is zero
     member(0,[N1, N2, N3, N4, N5]).
     % Second, third, and last-but-one digits are exact multiples of the first digit
+
+
 
 digits(N,[N]) :-
     N < 10.
@@ -51,7 +55,7 @@ length_list( [ _ | T ] , N ):-
     
 nodups([],[]).
 nodups(X):-
-    length_list(X) \= nub(X).
+    length_list(X) \= length_list(nub(X)).
     
    
 x_generator3(N) :-

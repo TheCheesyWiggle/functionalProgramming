@@ -7,67 +7,47 @@ generator3(N):-
     N is X * X.
 
 tester3(N):-
-   	% Convert the number to a list of digits, Ensure all digits are different
+    % Convert the number to a list of digits, Ensure all digits are different
     digits(N,X),
-    nodups(X),
-    % Last digit is equal to the number of digits
-    length_list(X, Len),
- 	elementAtIndex(Len-1, X, Last),
-    Last =:= Len,
-    % Last-but-one digit is odd
-    Z is Len-2,
-   	elementAtIndex(Z, X, LastButOne),
-    1 =:= LastButOne mod 2,
-    % One of the digits is zero
-    member(0, X),
-    % Second, third, and last-but-one digits are exact multiples of the first digit
-	elementAtIndex(1, X, X1),
-    0 =:= X1 mod Last,
-    elementAtIndex(2, X, X2),
-    0 =:= X2 mod Last,
-    0 =:= LastButOne mod Last.
-    
-elementAtIndex(0, [X|_], X).
-elementAtIndex(Index, [_|Tail], Element) :-
-    Index > 0,
-    NewIndex is Index - 1,
-    elementAtIndex(NewIndex, Tail, Element).
+    nodups(X).
+	% Last digit is equal to the number of digits
+	
 
-digits(N , [N]) :-
+%works
+digits(N , [N]):-
     N < 10.
-
+% works
 digits(N, W):-
     N >= 10,
     div_mod(N, 10, D, M),
     digits(D, R),
     append(R, [M], W).
+%works
+div_mod(A, B, D, M):-
+    D is A div B,
+    M is A mod B.
+
 % works
 nub([],[]).
 nub([X|XS], [X|W]):-
     \+ member(X, XS),
     nub(XS, W).
-
 nub([X|XS],W):-
     member(X, XS),
     nub( XS, W).
 
 nodups([],[]).
 nodups(X):-
-    nub(X,Z),
-    length_list(X, Len1),
-    length_list(Z, Len2),
-    Len1 \= Len2.
+    nub(X,Y),
+    length_list(X,LX),
+    length_list(Y,LY),
+    LX \= LY.
 
+% works
 length_list( [] , 0 ).
 length_list( [ _ | T ] , N ):-
   length_list( T , W ),
   N is W + 1.
-
-
-
-div_mod(A, B, D, M):-
-    D is A div B,
-    M is A mod B.
 
 x_generator3(N) :-
   	x_generator3_loop(

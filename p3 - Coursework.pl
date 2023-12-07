@@ -1,5 +1,5 @@
-main():-
-    x_generator3().
+main(N):-
+    x_generator3(N).
 
 generator3(N):-
     between(1000, 1000000, N),
@@ -8,22 +8,32 @@ generator3(N):-
 
 tester3(N):-
    	% Convert the number to a list of digits, Ensure all digits are different
-    digits(N,[N1, N2, N3, N4, N5]),
-    N1>0, N2>0, N3>0, N4>0, N5>0,
-    nodups([N1, N2, N3, N4, N5]),
+    digits(N,X),
+    nodups(X),
     % Last digit is equal to the number of digits
-    length_list([N1, N2, N3, N4, N5], NumDigits),
-    N5 =:= NumDigits,
- 
+    length_list(X, Len),
+ 	elementAtIndex(Len-1, X, Last),
+    Last =:= Len,
     % Last-but-one digit is odd
-    
+    Z is Len-2,
+   	elementAtIndex(Z, X, LastButOne),
+    1 =:= LastButOne mod 2,
     % One of the digits is zero
-    member(0,[N1, N2, N3, N4, N5]).
+    member(0, X),
     % Second, third, and last-but-one digits are exact multiples of the first digit
+	elementAtIndex(1, X, X1),
+    0 =:= X1 mod Last,
+    elementAtIndex(2, X, X2),
+    0 =:= X2 mod Last,
+    0 =:= LastButOne mod Last.
+    
+elementAtIndex(0, [X|_], X).
+elementAtIndex(Index, [_|Tail], Element) :-
+    Index > 0,
+    NewIndex is Index - 1,
+    elementAtIndex(NewIndex, Tail, Element).
 
-
-
-digits(N,[N]) :-
+digits(N , [N]) :-
     N < 10.
 
 digits(N, W):-
@@ -31,14 +41,7 @@ digits(N, W):-
     div_mod(N, 10, D, M),
     digits(D, R),
     append(R, [M], W).
-
-digits(N, W):-
-    N >= 100,
-    div_mod(N, 100, D, M),
-    digits(D, R),
-    append(R, [M], W).
-
-    
+% works
 nub([],[]).
 nub([X|XS], [X|W]):-
     \+ member(X, XS),
@@ -48,16 +51,24 @@ nub([X|XS],W):-
     member(X, XS),
     nub( XS, W).
 
+nodups([],[]).
+nodups(X):-
+    nub(X,Z),
+    length_list(X, Len1),
+    length_list(Z, Len2),
+    Len1 \= Len2.
+
 length_list( [] , 0 ).
 length_list( [ _ | T ] , N ):-
   length_list( T , W ),
   N is W + 1.
-    
-nodups([],[]).
-nodups(X):-
-    length_list(X) \= length_list(nub(X)).
-    
-   
+
+
+
+div_mod(A, B, D, M):-
+    D is A div B,
+    M is A mod B.
+
 x_generator3(N) :-
   	x_generator3_loop(
         [ 1024 , 9409 , 23716 , 51529

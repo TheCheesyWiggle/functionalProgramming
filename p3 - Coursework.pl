@@ -1,5 +1,5 @@
 main(N):-
-    x_generator3(N).
+    x_tester3(N).
 
 generator3(N):-
     between(1000, 1000000, N),
@@ -9,8 +9,23 @@ generator3(N):-
 tester3(N):-
     % Convert the number to a list of digits, Ensure all digits are different
     digits(N,X),
-    nodups(X).
-	% Last digit is equal to the number of digits
+    nodups(X),
+    % Last digit is equal to the number of digits
+    length(X, Len),
+    elementAtIndex(Len - 1,X,Last),
+    Last =:= Len,
+    % Last-but-one digit is odd
+    elementAtIndex(Len-2, X, LastButOne),
+    LastButOne mod 2 =:= 1,
+    % One of the digits is zero
+    member(0, X),
+    % Second, third, and last-but-one digits are exact multiples of the first digit
+    elementAtIndex(1, X, X1),
+    0 =:= X1 mod Last,
+    elementAtIndex(2, X, X2),
+    0 =:= X2 mod Last,
+    0 =:= LastButOne mod Last.
+
 	
 
 %works
@@ -35,19 +50,19 @@ nub([X|XS], [X|W]):-
 nub([X|XS],W):-
     member(X, XS),
     nub( XS, W).
-
+% Works
 nodups([],[]).
 nodups(X):-
-    nub(X,Y),
-    length_list(X,LX),
-    length_list(Y,LY),
-    LX \= LY.
-
-% works
-length_list( [] , 0 ).
-length_list( [ _ | T ] , N ):-
-  length_list( T , W ),
-  N is W + 1.
+    nub(X, NewList),
+    length(X, Len1),
+    length(NewList, Len2),
+    Len1 =:= Len2.
+% Works
+elementAtIndex(0, [X|_], X).
+elementAtIndex(Index, [_|Tail], Element) :-
+    Index > 0,
+    NewIndex is Index - 1,
+    elementAtIndex(NewIndex, Tail, Element).
 
 x_generator3(N) :-
   	x_generator3_loop(

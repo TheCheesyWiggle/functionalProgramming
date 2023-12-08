@@ -10,3 +10,8 @@ has_factor(N, F) :-
     F * F < N, 
     NF is F + 2, 
     has_factor(N, NF).
+
+leading_zero([H|_]):- 
+	H =:= 0.
+
+generator4():-

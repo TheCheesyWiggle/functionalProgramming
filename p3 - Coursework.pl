@@ -1,5 +1,5 @@
 main(N):-
-    x_tester3(N).
+    generator3(N), tester3(N), write(N).
 
 generator3(N):-
     between(1000, 1000000, N),
@@ -20,11 +20,13 @@ tester3(N):-
     % One of the digits is zero
     member(0, X),
     % Second, third, and last-but-one digits are exact multiples of the first digit
+    % Check they arent 0????
+    elementAtIndex(0, X, First),
     elementAtIndex(1, X, X1),
-    0 =:= X1 mod Last,
+    0 =:= X1 mod First,
     elementAtIndex(2, X, X2),
-    0 =:= X2 mod Last,
-    0 =:= LastButOne mod Last.
+    0 =:= X2 mod First,
+    0 =:= LastButOne mod First .
 
 	
 

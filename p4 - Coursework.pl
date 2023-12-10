@@ -1,5 +1,6 @@
+
 main(N):-
-    x_generator4(N).
+    x_tester4(N).
 
 generator4(X) :-
     X1 = [0,1,2,3,4,5,6,7,8,9],
@@ -51,21 +52,6 @@ perm(List, [X|Perm]) :-
     perm(Rest, Perm).
 
 % Works
-%concat([], List2, List3, List4, Result) :-
-%    concat(List2, List3, List4, Result).
-%concat([Head|Tail1], List2, List3, List4, [Head|Result]) :-
-%    concat(Tail1, List2, List3, List4, Result).
-
-%concat([], List3, List4, Result) :-
-%    concat(List3, List4, Result).
-%concat([Head|Tail1], List3, List4, [Head|Result]) :-
-%    concat(Tail1, List3, List4, Result).
-
-%concat([], List2, Result) :- Result = List2.
-%concat([Head|Tail1], List2, [Head|Result]) :-
-%    concat(Tail1, List2, Result).
-
-% Works
 combosOfSize(_, 0, []).
 combosOfSize(List, Size, Combo) :-
     Size > 0,
@@ -89,9 +75,12 @@ hasFactor(N, F):-
     hasFactor(N, F2).
 
 tester4(XS):- 
+    % remove smallest prime
+    % Decending order
+    % Validate the set
     discard_smallest_prime(XS, Discarded), 
     descending_order(Discarded, Desc), 
-    valiSet(Desc).
+    validSet(Desc).
 
 discard_smallest_prime([[_|T]|Rest], [T|Rest]).
 descending_order(List, Desc):- 

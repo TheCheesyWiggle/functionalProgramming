@@ -43,17 +43,15 @@ is_prime_list([H | T]) :-
     is_prime(H),
     is_prime_list(T).
 
-% Base case: removing elements from an empty list results in an empty list
-leading_zeros([], _, []).
-
-% If the element to be removed is the head of the list, skip it and recurse on the tail
-leading_zeros([X|Tail], X, Result) :-
-    leading_zeros(Tail, X, Result).
-
-% If the element to be removed is not the head, keep the head and recurse on the tail
-leading_zeros([Head|Tail], X, [Head|Result]) :-
-    dif(Head, X), 
-    leading_zeros(Tail, X, Result).
+leading_zeros([], []).
+leading_zeros([H|T], [H|W]) :-
+    leading_zeros_check(H),
+    leading_zeros(T, W).
+leading_zeros([_|T], W) :-
+    leading_zeros(T, W).
+leading_zeros_check([]) :- !.
+leading_zeros_check([H|_]) :-
+    H \= 0.
 
 % Generate prime arrangements
 generator4(Result) :-

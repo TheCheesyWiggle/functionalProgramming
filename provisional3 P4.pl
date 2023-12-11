@@ -4,9 +4,12 @@ main(N):-
 generator4(N):-
     D = [1,2,3,4,5,6,7,8,9,0],
     % Generate combinations from size 1 to size 4.
+    % Make combos return a list
     combos(D,C),
     % Generate permutations of these combinations.
-    perms(C,N).
+    perms(C, Perm),
+    % Flatten the list of permutations
+    append(Perm, N).
     % Collate all into one list.
     % Remove leading zeros.
     % Filter for primes.
@@ -29,13 +32,17 @@ has_factor(N, Factor) :-
     has_factor(N, NextFactor).
 
 % Works
-combos([], []).
-combos([Head|Tail], [Head|Combo]) :-
-    combos(Tail, Combo),
-    length([Head|Combo], N), 
-    N =< 4.
-combos([_|Tail], Combo) :-
-    combos(Tail, Combo).
+combos(List, Result) :-
+    combos(List, [], Result).
+
+combos([], Acc, [Acc]).
+combos([Head|Tail], Acc, Result) :-
+    length([Head|Acc], N),
+    N > 0,
+    N =< 4,
+    combos(Tail, [Head|Acc], Result).
+combos([_|Tail], Acc, Result) :-
+    combos(Tail, Acc, Result).
 
 % Works
 perms([], []).
@@ -44,8 +51,6 @@ perms(List, [X|Perm]) :-
     select(X, List, Rest),
     perms(Rest, Perm).
 
-
-    
 x_generator4(N):-
 	x_generator4_loop(
         [ [[9 ,6 ,7] ,[4 ,0 ,1] ,[2 ,8 ,3] ,[5]]

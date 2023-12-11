@@ -27,9 +27,11 @@ validPrimeSet([H|T]):-
     prime(Num), 
     validPrimeSet(T).
 
+% Output is in reverese order
 list_to_number([], 0).
 list_to_number([D|Digits], Num):- 
-    list_to_number(Digits, RestNum), Num is D + RestNum * 10.
+    list_to_number(Digits, RestNum), 
+    Num is RestNum * 10 + D.
 
 leadingZeros([H|T], [H|T_no_zeros]):-
     H \= 0,

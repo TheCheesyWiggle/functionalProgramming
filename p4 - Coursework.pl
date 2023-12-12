@@ -2,15 +2,19 @@ main(N):-
     generator4(N).
 
 generator4(N):-
+    gen_primes(S,N).
+
+gen_primes(S,N):-
     D = [9,8,7,6,5,4,3,2,1,0],
-    combo_of_size(D,4,C),
+    combo_of_size(D,S,C),
     perm(C,P),
     leading_zero(P),
     reverse(P,R),
     list_to_number(R,N),
-    is_prime(N).
+    is_prime(N)
     
-    
+%next_largest_prime
+%
 % Works
 combos([], []).
 combos([Head|Tail], [Head|Combo]) :-

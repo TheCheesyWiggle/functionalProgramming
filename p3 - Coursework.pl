@@ -23,13 +23,16 @@ tester3(N):-
     % Check they arent 0????
     elementAtIndex(0, X, First),
     elementAtIndex(1, X, X1),
-    0 =:= X1 mod First,
+    multiple(X1,First),
     elementAtIndex(2, X, X2),
-    0 =:= X2 mod First,
-    0 =:= LastButOne mod First .
+   	multiple(X2,First),
+    multiple(LastButOne,First).
 
 	
-
+multiple(X,Y):-
+    X \=0,
+    Y \= 0,
+    X mod Y =:= 0.
 %works
 digits(N , [N]):-
     N < 10.

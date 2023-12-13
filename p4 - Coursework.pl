@@ -1,26 +1,47 @@
 main(N):-
-    generator4(N).
+    x_generator4(N).
 
 generator4(N):-
-    gen_primes(S,N).
+    gen_run([1,2,3,4,5,6,7,8,9,0],N).
 
-gen_primes(S,N):-
-    D = [9,8,7,6,5,4,3,2,1,0],
-    combo_of_size(D,S,C),
-    perm(C,P),
-    leading_zero(P),
-    reverse(P,R),
-    list_to_number(R,N),
-    is_prime(N)
+
+remove_subset([], List, List).
+
+remove_subset([SubsetH|SubsetT], List, Result) :-
+    select(SubsetH, List, UpdatedList),
+    remove_subset(SubsetT, UpdatedList, Result).
+
+
+gen_run([],[]).
+gen_run(Digits,[Prime|More]):-
+    gen_primes(Digits,Prime),
+    remove_subset(Prime,Digits,NewDigits),
+    gen_run(NewDigits, More).
     
-%next_largest_prime
-%
+
 % Works
-combos([], []).
-combos([Head|Tail], [Head|Combo]) :-
-    combos(Tail, Combo).
-combos([_|Tail], Combo) :-
-    combos(Tail, Combo).
+gen_primes(Digits,List):-
+    all_combos(Digits,Combos),
+    perm(Combos,Perm),
+    leading_zero(Perm),
+    reverse(Perm,Reverse),
+    list_to_number(Reverse,Num),
+    is_prime(Num),
+    digits(Num,List).
+
+%works
+digits(N , [N]):-
+    N < 10.
+% works
+digits(N, W):-
+    N >= 10,
+    div_mod(N, 10, D, M),
+    digits(D, R),
+    append(R, [M], W).
+%works
+div_mod(A, B, D, M):-
+    D is A div B,
+    M is A mod B.
 
 leading_zero([]).
 leading_zero([X|_]):-
@@ -53,10 +74,36 @@ perm(List, [X|Perm]) :-
 
 % Works
 combo_of_size(_, 0, []).
-combo_of_size(List, Size, Combo) :-
-    Size > 0,
-    Size =< 4, 
-    append(_, [Head|Tail], List),
-    Size1 is Size - 1,
-    combo_of_size(Tail, Size1, SubCombo),
-    Combo = [Head|SubCombo].
+combo_of_size(List, S, Combo) :-
+    S > 0,
+    S =< 4, 
+    append(_, [H|T], List),
+    S1 is S - 1,
+    combo_of_size(T, S1, SubCombo),
+    Combo = [H|SubCombo].
+
+all_combos(D,L):-
+    between(1, 4, S), 
+    combo_of_size(D, S, L).
+
+
+x_generator4(N):-
+	x_generator4_loop(
+        [ [[9 ,6 ,7] ,[4 ,0 ,1] ,[2 ,8 ,3] ,[5]]
+        , [[9 ,8 ,3] ,[6 ,0 ,1] ,[5] ,[4 ,7] ,[2]]
+        , [[9 ,8 ,3] ,[6 ,7] ,[4 ,2 ,0 ,1] ,[5]]
+        , [[9 ,8 ,5 ,1] ,[2] ,[4 ,3] ,[6 ,0 ,7]]
+        , [[9 ,8 ,5 ,1] ,[2] ,[3] ,[6 ,0 ,4 ,7]]
+        , [[9 ,8 ,5 ,1] ,[2] ,[7] ,[4 ,6 ,0 ,3]]
+        , [[8 ,9] ,[7] ,[6 ,0 ,1] ,[2 ,5 ,4 ,3]]
+        , [[8 ,9] ,[7] ,[5 ,6 ,3] ,[4 ,0 ,2 ,1]]
+        , [[8 ,9] ,[5] ,[4 ,7] ,[6 ,0 ,1] ,[3] ,[2]]
+        , [[3] ,[5] ,[6 ,0 ,7] ,[2] ,[4 ,1] ,[8 ,9]] ] , 0 , N ).
+
+x_generator4_loop( [] , C , C ).
+x_generator4_loop( [ T | TS ] , C , N ):-
+  	generator4( T ),
+  	C1 is C + 1 ,
+	x_generator4_loop( TS , C1 , N ).
+x_generator4_loop( [ _ | TS ] , C , N ):-
+	x_generator4_loop( TS , C , N ).

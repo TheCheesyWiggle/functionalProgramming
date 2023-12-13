@@ -1,18 +1,37 @@
 main(N):-
-    x_generator4(N).
+    generator4(N).
 
 generator4(N):-
     gen_run([1,2,3,4,5,6,7,8,9,0],N).
 
 
-remove_subset([], List, List).
+tester4(N):-
+    %discard the smallest
+    %sort
+    %make one number
+    %split into cubes
+    
+% Helper predicate to check if a number is a cube
+is_cube(N) :- 
+    X #= integer(cbrt(N)),
+    N #= X*X*X.
 
+cube_checker(N):-
+
+% Helper predicate to arrange digits in decreasing order
+decreasing_order([], []).
+decreasing_order(List, Sorted) :-
+    msort(List, Temp),
+    reverse(Temp, Sorted).
+
+
+remove_subset([], List, List).
 remove_subset([SubsetH|SubsetT], List, Result) :-
     select(SubsetH, List, UpdatedList),
     remove_subset(SubsetT, UpdatedList, Result).
 
 
-gen_run([],[]).
+gen_run([], []).
 gen_run(Digits,[Prime|More]):-
     gen_primes(Digits,Prime),
     remove_subset(Prime,Digits,NewDigits),

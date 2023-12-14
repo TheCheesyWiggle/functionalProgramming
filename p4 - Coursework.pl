@@ -1,5 +1,5 @@
 main(N):-
-    generator4(N),tester4(N),write(N).
+    generator4(N),tester4(N).
 
 generator4(N):-
     gen_run([1,2,3,4,5,6,7,8,9,0],N).
@@ -18,6 +18,12 @@ tester4(N):-
     %make one number
     %split into cubes
 
+convert([],[]).
+convert([H|T],[NewH|R]):-
+    digits(H,NewH),
+    convert(T,R).
+
+check([]).
 check([H|T]):-
     is_cube(H),
     check(T).

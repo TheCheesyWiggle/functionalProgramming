@@ -1,5 +1,5 @@
 main(N):-
-    generator4(N).
+    generator4(N),tester4(N),write(N).
 
 generator4(N):-
     gen_run([1,2,3,4,5,6,7,8,9,0],N).
@@ -7,16 +7,46 @@ generator4(N):-
 
 tester4(N):-
     convert_to_numbers(N,N1),
-    decreasing_order(N,N1).
-	%sort
-    %discard the smallest
+    % Discard first
+    sort(N1,N2),
+    remove_first(N2,Removed),
+    % Sort
+    decreasing_order(Removed,Sorted),
+    convert(Sorted,Converted),
+   	flatten(Converted,D),
+    check(D).
     %make one number
     %split into cubes
 
+check([H|T]):-
+    is_cube(H),
+    check(T).
+check([H1,H2|T]):-
+    list_to_number([H1,H2],Temp),
+    is_cube(Temp),
+    check(T).
+check([H1,H2,H3|T]):-
+    list_to_number([H1,H2,H3],Temp),
+    is_cube(Temp),
+    check(T).
+check([H1,H2,H3,H4|T]):-
+    list_to_number([H1,H2,H3,H4],Temp),
+    is_cube(Temp),
+    check(T).
+    
+
+is_cube(N) :-
+    integer(N),
+    CubeRoot is round(N^(1/3)),
+    Cube is CubeRoot * CubeRoot * CubeRoot,
+    N =:= Cube.
+
+remove_first([_ | Tail], Tail).
 
 decreasing_order([], []).
-decreasing_order(List, Sorted):-
-    sort(List,Sorted).
+decreasing_order(List, R):-
+    sort(List,Sorted),
+    reverse(Sorted,R).
 
 convert_to_numbers([], []).
 convert_to_numbers([List|Rest], [Number|Result]) :-
@@ -123,3 +153,24 @@ x_generator4_loop( [ T | TS ] , C , N ):-
 	x_generator4_loop( TS , C1 , N ).
 x_generator4_loop( [ _ | TS ] , C , N ):-
 	x_generator4_loop( TS , C , N ).
+
+x_tester4( N ):-
+  x_tester4_loop(
+    [ [[8 ,2 ,7] ,[6 ,1] ,[5 ,3] ,[4 ,0 ,9]]
+    , [[8 ,2 ,7] ,[6 ,1] ,[4 ,0 ,9] ,[5 ,3]]
+    , [[8 ,2 ,7] ,[5 ,3] ,[6 ,1] ,[4 ,0 ,9]]
+    , [[8 ,2 ,7] ,[4 ,0 ,9] ,[6 ,1] ,[5 ,3]]
+    , [[6 ,1] ,[8 ,2 ,7] ,[4 ,0 ,9] ,[5 ,3]]
+    , [[6 ,1] ,[4 ,0 ,9] ,[5 ,3] ,[8 ,2 ,7]]
+    , [[5 ,3] ,[6 ,1] ,[4 ,0 ,9] ,[8 ,2 ,7]]
+    , [[5 ,3] ,[4 ,0 ,9] ,[6 ,1] ,[8 ,2 ,7]]
+    , [[4 ,0 ,9] ,[5 ,3] ,[8 ,2 ,7] ,[6 ,1]]
+    , [[4 ,0 ,9] ,[8 ,2 ,7] ,[6 ,1] ,[5 ,3]] ] , 0 , N ).
+
+x_tester4_loop( [] , C , C ).
+x_tester4_loop( [ T | TS ] , C , N ):-
+  	tester4( T ) ,
+  	C1 is C + 1 ,
+	x_tester4_loop( TS , C1 , N ).
+x_tester4_loop( [ _ | TS ] , C , N ):-
+	x_tester4_loop( TS , C , N ).

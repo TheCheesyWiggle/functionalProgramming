@@ -6,23 +6,22 @@ generator4(N):-
 
 
 tester4(N):-
+    convert_to_numbers(N,N1),
+    decreasing_order(N,N1).
+	%sort
     %discard the smallest
-    %sort
     %make one number
     %split into cubes
-    
-% Helper predicate to check if a number is a cube
-is_cube(N) :- 
-    X #= integer(cbrt(N)),
-    N #= X*X*X.
 
-cube_checker(N):-
 
-% Helper predicate to arrange digits in decreasing order
 decreasing_order([], []).
-decreasing_order(List, Sorted) :-
-    msort(List, Temp),
-    reverse(Temp, Sorted).
+decreasing_order(List, Sorted):-
+    sort(List,Sorted).
+
+convert_to_numbers([], []).
+convert_to_numbers([List|Rest], [Number|Result]) :-
+    list_to_number(List,Number),
+    convert_to_numbers(Rest, Result).
 
 
 remove_subset([], List, List).
@@ -30,21 +29,18 @@ remove_subset([SubsetH|SubsetT], List, Result) :-
     select(SubsetH, List, UpdatedList),
     remove_subset(SubsetT, UpdatedList, Result).
 
-
 gen_run([], []).
 gen_run(Digits,[Prime|More]):-
     gen_primes(Digits,Prime),
     remove_subset(Prime,Digits,NewDigits),
     gen_run(NewDigits, More).
     
-
 % Works
 gen_primes(Digits,List):-
     all_combos(Digits,Combos),
     perm(Combos,Perm),
     leading_zero(Perm),
-    reverse(Perm,Reverse),
-    list_to_number(Reverse,Num),
+    list_to_number(Perm,Num),
     is_prime(Num),
     digits(Num,List).
 
@@ -66,11 +62,13 @@ leading_zero([]).
 leading_zero([X|_]):-
     X \= 0.
 
-% Output is in reverese order
-list_to_number([], 0).
-list_to_number([D|Digits], Num):- 
-    list_to_number(Digits, RestNum), 
-    Num is RestNum * 10 + D.
+
+list_to_number(L,N):-
+	list_to_number(L,0,N).
+list_to_number([],A,A).
+list_to_number([H|T],A, N):- 
+    B is 10*A + H,
+    list_to_number(T,B,N).
 
 % Works
 is_prime(2).
@@ -104,7 +102,6 @@ combo_of_size(List, S, Combo) :-
 all_combos(D,L):-
     between(1, 4, S), 
     combo_of_size(D, S, L).
-
 
 x_generator4(N):-
 	x_generator4_loop(
